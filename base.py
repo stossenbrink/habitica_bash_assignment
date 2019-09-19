@@ -5,16 +5,16 @@ import requests
 import json
 
 
-sender="Alina"
 if len(sys.argv)<2:
 	print("Bad config:", sys.argv)
 	sys.exit()
 config = json.load(open(sys.argv[1],"r"))
-print(config)
 
-user_ID=config["uid"]  #"98b363da-781d-4507-a5ee-2965bf55a7e9"
+
+user_ID=config["uid"]
 user_token = config["token"]
-
+assert user_ID, "Keine UserID konfiguriert"
+assert user_token, "Kein Token konfiguriert"
 
 def add_todo(args):
 	task_types= ["habit", "daily", "todo"]
@@ -23,7 +23,7 @@ def add_todo(args):
 	task_type = "todo"
 	
 	if len(args) == 0:
-		print("Zu wenige Argumente. \nBeispiel: stefan bring bier\nstefan schwer daily 50 liegestütz\nDie Reihenfolge ist wichtig!")
+		print("Zu wenige Argumente. \nBeispiel: name bring bier\nname schwer daily 50 liegestütz\nDie Reihenfolge ist wichtig!")
 		return
 	if len(args) > 1:
 		if args[0] in difficulties:
@@ -40,7 +40,7 @@ def add_todo(args):
 	task = {
     "text": task_text,
     "type": task_type,
-    "notes": "Von " + sender+" hinzugefügt",
+    "notes": "Über API hinzugefügt",
     "priority": difficulty}
 	headers = {
 		"x-api-user":user_ID,
